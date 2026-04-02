@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#080810">
+<title>성북서림 城北書林</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   RESET & ROOT
+═══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:        #080810;
+  --bg2:       #0e0e1c;
+  --gold:      #c8a96e;
+  --gold-lt:   #e2c98a;
+  --gold-dim:  rgba(200,169,110,0.12);
+  --gold-line: rgba(200,169,110,0.22);
+  --ep1:       #c8a96e;
+  --ep2:       #7eb8d4;
+  --text:      #f0ebe0;
+  --muted:     #7a7060;
+  --line:      rgba(255,255,255,0.08);
+  --r:         16px;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Serif KR', Georgia, serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════════
+   SCROLL PROGRESS
+═══════════════════════════════════════ */
+#prog {
+  position: fixed; top: 0; left: 0;
+  height: 2px; width: 0%;
+  background: linear-gradient(90deg, var(--ep1), var(--ep2));
+  z-index: 9999;
+  transition: width 0.08s linear;
+}
+
+/* ═══════════════════════════════════════
+   NAV
+═══════════════════════════════════════ */
+nav {
+  position: fixed; top: 2px; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: rgba(8,8,16,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 17px; font-weight: 900;
+  color: var(--gold); letter-spacing: 0.04em;
+  line-height: 1.1;
+}
+.nav-logo-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: rgba(240,235,224,0.96);
+  padding: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.22);
+  flex-shrink: 0;
+}
+.nav-logo-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.nav-logo-text {
+  display: flex;
+  flex-direction: column;
+}
+.nav-logo small {
+  display: block;
+  font-size: 9px; font-weight: 400;
+  color: var(--muted);
+  letter-spacing: 0.18em;
+  font-family: 'Segoe UI', sans-serif;
+  margin-top: 1px;
+}
+.nav-links {
+  display: flex; gap: 2px;
+}
+.nav-links a {
+  padding: 6px 9px;
+  font-size: 10px; font-family: 'Segoe UI', sans-serif;
+  font-weight: 600; letter-spacing: 0.06em;
+  color: var(--muted); text-decoration: none;
+  border-radius: 999px;
+  transition: color 0.2s, background 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-links a:hover, .nav-links a.on {
+  color: var(--gold); background: var(--gold-dim);
+}
+
+/* ═══════════════════════════════════════
+   HERO
+═══════════════════════════════════════ */
+#hero {
+  min-height: 100svh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 56px;
+  overflow: hidden;
+}
+
+/* ──────────────────────────────────────
+   ██ IMAGE PLACEHOLDER ①
+   히어로 배경 이미지 (게임 메인 아트)
+   적용 방법:
+     .hero-bg-img { background: url('your-hero-art.jpg') center/cover no-repeat; }
+   권장 해상도: 1080×1920px (모바일 세로) 또는 1920×1080px
+────────────────────────────────────── */
+.hero-bg-img {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(8,8,16,0.18) 0%, rgba(8,8,16,0.08) 36%, rgba(8,8,16,0.72) 100%),
+    radial-gradient(ellipse at 30% 20%, rgba(120,80,30,0.25) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 70%, rgba(20,40,80,0.3) 0%, transparent 50%),
+    url('hero-bg.png') center center / cover no-repeat,
+    linear-gradient(160deg, #110c06 0%, #08080f 45%, #060d14 100%);
+}
+
+#particles {
+  position: absolute; inset: 0; z-index: 1;
+  pointer-events: none;
+}
+.hero-veil {
+  position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(180deg,
+    rgba(8,8,16,0.15) 0%,
+    rgba(8,8,16,0.0) 40%,
+    rgba(8,8,16,0.92) 85%,
+    #080810 100%
+  );
+}
+.hero-body {
+  position: relative; z-index: 3;
+  padding: 0 24px;
+  max-width: 480px;
+}
+.hero-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(240,235,224,0.14);
+  border-radius: 999px;
+  background: rgba(8,8,16,0.42);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  animation: rise 0.7s 0.18s forwards;
+}
+.hero-brand-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: rgba(240,235,224,0.96);
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-brand-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.hero-brand-text {
+  font-size: 10px;
+  font-family: 'Segoe UI', sans-serif;
+  color: rgba(240,235,224,0.82);
+  letter-spacing: 0.18em;
+}
+.eyebrow {
+  font-size: 10px; font-family: 'Segoe UI', sans-serif;
+  letter-spacing: 0.28em; color: var(--gold);
+  text-transform: uppercase; margin-bottom: 14px;
+  opacity: 0; animation: rise 0.7s 0.3s forwards;
+  display: flex; align-items: center; gap: 10px;
+}
+.eyebrow::before {
+  content: ''; width: 28px; height: 1px;
+  background: var(--gold-line);
+}
+h1 {
+  font-size: clamp(44px, 11vw, 72px);
+  font-weight: 900; line-height: 1.0;
+  margin-bottom: 8px;
+  opacity: 0; animation: rise 0.7s 0.5s forwards;
+}
+.hanja {
+  display: block;
+  font-size: clamp(12px, 3vw, 18px);
+  font-weight: 400; color: var(--gold);
+  letter-spacing: 0.35em; margin-top: 8px;
+}
+.hero-sub {
+  font-size: 11px; font-family: 'Segoe UI', sans-serif;
+  color: var(--muted); letter-spacing: 0.12em;
+  margin-bottom: 18px;
+  opacity: 0; animation: rise 0.7s 0.65s forwards;
+}
+.hero-desc {
+  font-size: 13.5px; color: rgba(240,235,224,0.65);
+  line-height: 1.85; margin-bottom: 30px;
+  max-width: 340px;
+  opacity: 0; animation: rise 0.7s 0.8s forwards;
+}
+.hero-desc strong { color: var(--gold-lt); }
+.cta-row {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  opacity: 0; animation: rise 0.7s 0.95s forwards;
+}
+.btn-fill {
+  padding: 13px 26px;
+  background: var(--gold); color: #080810;
+  border: none; border-radius: 999px;
+  font-size: 12px; font-weight: 700;
+  font-family: 'Segoe UI', sans-serif;
+  letter-spacing: 0.04em; cursor: pointer;
+  text-decoration: none; transition: 0.22s;
+  display: inline-flex; align-items: center; gap: 7px;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-fill:hover { background: var(--gold-lt); transform: translateY(-1px); }
+.btn-ghost {
+  padding: 13px 26px;
+  background: transparent; color: var(--gold);
+  border: 1px solid var(--gold-line); border-radius: 999px;
+  font-size: 12px; font-weight: 600;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer; text-decoration: none; transition: 0.22s;
+  display: inline-flex; align-items: center; gap: 7px;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-ghost:hover { background: var(--gold-dim); border-color: var(--gold); }
+
+/* ──────────────────────────────────────
+   ██ VIDEO PLACEHOLDER ①
+   메인 트레일러 (히어로 우하단)
+   적용 방법 (YouTube):
+     <iframe src="https://www.youtube.com/embed/[VIDEO_ID]"
+       frameborder="0" allowfullscreen
+       style="width:100%;height:100%;border-radius:50%">
+     </iframe>
+   적용 방법 (로컬):
+     <video src="trailer.mp4" autoplay muted loop playsinline
+       style="width:100%;height:100%;object-fit:cover">
+     </video>
+────────────────────────────────────── */
+.hero-play {
+  position: absolute; right: 24px; bottom: 72px;
+  z-index: 4;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 7px;
+  opacity: 0; animation: rise 0.7s 1.1s forwards;
+}
+.play-ring {
+  width: 58px; height: 58px; border-radius: 50%;
+  border: 1.5px solid var(--gold-line);
+  background: rgba(200,169,110,0.08);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: 0.25s;
+  backdrop-filter: blur(8px);
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+.play-ring::after {
+  content: '';
+  position: absolute; inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(200,169,110,0.15);
+  animation: ripple 2.5s infinite;
+}
+.play-ring svg { width: 17px; fill: var(--gold); margin-left: 3px; }
+.play-ring:hover { background: rgba(200,169,110,0.2); transform: scale(1.07); }
+.play-label {
+  font-size: 9px; font-family: 'Segoe UI', sans-serif;
+  color: var(--muted); letter-spacing: 0.14em;
+  text-align: center; line-height: 1.4;
+}
+
+/* ═══════════════════════════════════════
+   SECTION BASE
+═══════════════════════════════════════ */
+.sec {
+  padding: 72px 24px;
+  max-width: 520px; margin: 0 auto;
+}
+.sec-tag {
+  font-size: 9px; font-family: 'Segoe UI', sans-serif;
+  letter-spacing: 0.28em; color: var(--gold);
+  text-transform: uppercase;
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 12px;
+}
+.sec-tag::after {
+  content: ''; flex: 1; height: 1px;
+  background: var(--gold-line);
+}
+h2 {
+  font-size: clamp(26px, 6.5vw, 40px);
+  font-weight: 900; line-height: 1.2;
+  margin-bottom: 18px;
+}
+h3 {
+  font-size: 18px; font-weight: 700;
+  margin-bottom: 10px;
+}
+p {
+  font-size: 13.5px; color: rgba(240,235,224,0.68);
+  line-height: 1.85; margin-bottom: 14px;
+}
+p strong { color: var(--text); }
+p em { color: var(--gold); font-style: normal; }
+
+/* ═══════════════════════════════════════
+   REVEAL ANIMATION
+═══════════════════════════════════════ */
+.rv {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.rv.d1 { transition-delay: 0.1s; }
+.rv.d2 { transition-delay: 0.2s; }
+.rv.d3 { transition-delay: 0.3s; }
+.rv.d4 { transition-delay: 0.4s; }
+.rv.show { opacity: 1; transform: none; }
+
+/* ═══════════════════════════════════════
+   OVERVIEW
+═══════════════════════════════════════ */
+#overview {
+  border-top: 1px solid var(--line);
+}
+.pull-quote {
+  font-size: 16px; font-style: italic;
+  color: var(--gold-lt); line-height: 1.7;
+  border-left: 3px solid var(--gold);
+  padding: 16px 20px;
+  background: var(--gold-dim);
+  border-radius: 0 12px 12px 0;
+  margin: 24px 0;
+}
+
+/* ──────────────────────────────────────
+   ██ IMAGE PLACEHOLDER ②
+   게임 개요 컨셉아트 / 키아트
+   적용 방법:
+     .img-ph 요소를 <img> 태그로 교체하거나
+     background: url('concept-art.jpg') center/cover;
+   권장 해상도: 1600×900px
+────────────────────────────────────── */
+.img-ph {
+  width: 100%; aspect-ratio: 16/9;
+  border-radius: var(--r);
+  border: 1px dashed rgba(200,169,110,0.28);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 10px;
+  background: rgba(255,255,255,0.018);
+  position: relative; overflow: hidden;
+  margin: 22px 0;
+}
+.img-ph::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(200,169,110,0.06) 0%, transparent 60%);
+}
+.img-ph svg { opacity: 0.35; }
+.img-ph-label {
+  font-size: 10px; font-family: 'Segoe UI', sans-serif;
+  color: var(--muted); letter-spacing: 0.08em;
+  text-align: center; line-height: 1.7;
+}
+.img-ph-label .ph-title {
+  display: block; color: rgba(200,169,110,0.6);
+  font-weight: 700; letter-spacing: 0.15em;
+  font-size: 11px; margin-bottom: 2px;
+}
+.img-ph img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.img-ph video,
+.img-ph iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: cover;
+  display: block;
+}
+
+.tags {
+  display: flex; flex-wrap: wrap; gap: 7px;
+  margin: 20px 0;
+}
+.tag {
+  padding: 5px 12px;
+  border: 1px solid var(--gold-line);
+  border-radius: 999px;
+  font-size: 10px; font-family: 'Segoe UI', sans-serif;
+  color: var(--muted); transition: 0.2s;
+}
+.tag:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ═══════════════════════════════════════
+   EPISODES
+═══════════════════════════════════════ */
+#ep-wrap {
+  border-top: 1px solid var(--line);
+}
+.ep-header {
+  padding: 72px 24px 28px;
+  max-width: 520px; margin: 0 auto;
+}
+.ep-tabs {
+  display: flex;
+  max-width: 520px; margin: 0 auto;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--line);
+}
+.ep-tab {
+  flex: 1; padding: 14px 8px;
+  text-align: center;
+  font-size: 12px; font-family: 'Segoe UI', sans-serif;
+  font-weight: 700; letter-spacing: 0.04em;
+  color: var(--muted); cursor: pointer;
+  border-bottom: 2.5px solid transparent;
+  transition: color 0.25s, border-color 0.25s;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.ep-tab[data-t="1"].on { color: var(--ep1); border-color: var(--ep1); }
+.ep-tab[data-t="2"].on { color: var(--ep2); border-color: var(--ep2); }
+
+.ep-body {
+  max-width: 520px; margin: 0 auto;
+  padding: 0 24px 60px;
+}
+.ep-panel { display: none; animation: fadeIn 0.38s ease; }
+.ep-panel.on { display: block; }
+
+.ornament {
+  text-align: center;
+  font-size: 12px; letter-spacing: 0.4em;
+  color: var(--muted); margin: 28px 0 22px;
+  position: relative;
+}
+.ornament::before, .ornament::after {
+  content: ''; position: absolute;
+  top: 50%; width: 28%; height: 1px;
+  background: var(--line);
+}
+.ornament::before { left: 0; }
+.ornament::after  { right: 0; }
+
+/* ──────────────────────────────────────
+   ██ VIDEO PLACEHOLDER ②
+   이태준 에피소드 게임플레이 영상
+   적용 방법 (YouTube):
+     <iframe src="https://www.youtube.com/embed/[VIDEO_ID]"
+       style="width:100%;aspect-ratio:16/9;border-radius:16px;border:none;"
+       allowfullscreen>
+     </iframe>
+   적용 방법 (로컬 파일):
+     <video src="ep1-gameplay.mp4" controls
+       style="width:100%;border-radius:16px;">
+     </video>
+────────────────────────────────────── */
+/* ──────────────────────────────────────
+   ██ VIDEO PLACEHOLDER ③
+   박태원 에피소드 게임플레이 영상
+   (위와 동일한 방법으로 교체)
+────────────────────────────────────── */
+.vid-ph {
+  width: 100%; aspect-ratio: 16/9;
+  border-radius: var(--r);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 14px;
+  margin: 24px 0; position: relative; overflow: hidden;
+}
+.vid-ph video,
+.vid-ph iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  object-fit: cover;
+}
+.vid-ph.gold {
+  border: 1.5px dashed rgba(200,169,110,0.35);
+  background: rgba(200,169,110,0.03);
+}
+.vid-ph.blue {
+  border: 1.5px dashed rgba(126,184,212,0.35);
+  background: rgba(126,184,212,0.03);
+}
+.vid-ph-btn {
+  width: 56px; height: 56px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.vid-ph.gold .vid-ph-btn {
+  background: rgba(200,169,110,0.1);
+  border: 1.5px solid rgba(200,169,110,0.45);
+}
+.vid-ph.blue .vid-ph-btn {
+  background: rgba(126,184,212,0.1);
+  border: 1.5px solid rgba(126,184,212,0.45);
+}
+.vid-ph.gold .vid-ph-btn svg { fill: var(--ep1); }
+.vid-ph.blue .vid-ph-btn svg  { fill: var(--ep2); }
+.vid-ph-btn svg { width: 18px; margin-left: 3px; }
+.vid-ph-label {
+  font-size: 10px; font-family: 'Segoe UI', sans-serif;
+  color: var(--muted); letter-spacing: 0.1em; text-align: center;
+  line-height: 1.6;
+}
+.vid-ph-label strong { display: block; color: rgba(200,169,110,0.65); letter-spacing: 0.15em; font-size: 11px; }
+.vid-ph.blue .vid-ph-label strong { color: rgba(126,184,212,0.65); }
+
+.feat-list {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 12px;
+  margin: 18px 0;
+}
+.feat-list li {
+  display: flex; gap: 13px; align-items: flex-start;
+  font-size: 13px; color: rgba(240,235,224,0.7);
+  line-height: 1.7; padding: 14px 16px;
+  border: 1px solid var(--line); border-radius: 12px;
+  background: rgba(255,255,255,0.018);
+  transition: border-color 0.2s, background 0.2s;
+}
+.feat-list li:hover { border-color: var(--gold-line); background: var(--gold-dim); }
+.feat-list .ico { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
+.feat-list strong { color: var(--text); }
+
+/* ──────────────────────────────────────
+   ██ IMAGE PLACEHOLDER ③ & ④
+   에피소드 스크린샷 2장씩
+   적용 방법:
+     .ss-ph 요소를 <img> 태그로 교체
+     또는 background: url('shot.jpg') center/cover;
+   권장 해상도: 800×600px
+────────────────────────────────────── */
+.ss-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; margin: 18px 0;
+}
+.ss-ph {
+  aspect-ratio: 4/3; border-radius: 10px;
+  border: 1px dashed var(--gold-line);
+  background: rgba(255,255,255,0.015);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  font-size: 9px; font-family: 'Segoe UI', sans-serif;
+  color: var(--muted); text-align: center;
+  line-height: 1.5; padding: 8px; gap: 4px;
+}
+.ss-ph svg { opacity: 0.3; }
+
+/* ═══════════════════════════════════════
+   TECH
+═══════════════════════════════════════ */
+#tech {
+  border-top: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--bg) 0%, #0b0b18 100%);
+  max-width: 100%; padding: 72px 0;
+}
+#tech .inner {
+  max-width: 520px; margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ──────────────────────────────────────
+   ██ IMAGE / VIDEO PLACEHOLDER ⑤
+   UE5 렌더링 시연 or 기술 데모 영상
+   (위 VIDEO PLACEHOLDER와 동일한 방법)
+────────────────────────────────────── */
+.tech-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin: 22px 0;
+}
+.tech-card {
+  padding: 18px 16px;
+  border: 1px solid var(--line); border-radius: var(--r);
+  background: rgba(255,255,255,0.02);
+  transition: 0.25s; cursor: default;
+  -webkit-tap-highlight-color: transparent;
+}
+.tech-card:hover, .tech-card:active {
+  border-color: var(--gold-line);
+  background: var(--gold-dim);
+  transform: translateY(-2px);
+}
+.tech-ico { font-size: 26px; margin-bottom: 10px; }
+.tech-name {
+  font-size: 12px; font-weight: 700;
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--text); margin-bottom: 5px;
+}
+.tech-desc {
+  font-size: 11px; color: var(--muted);
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.55; margin: 0;
+}
+
+/* ═══════════════════════════════════════
+   TARGET & REVENUE
+═══════════════════════════════════════ */
+#target { border-top: 1px solid var(--line); }
+
+.tgt-list {
+  display: flex; flex-direction: column; gap: 12px;
+  margin: 22px 0;
+}
+.tgt-item {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 18px 16px;
+  border: 1px solid var(--line); border-radius: var(--r);
+  background: rgba(255,255,255,0.018);
+  transition: 0.22s; cursor: default;
+  -webkit-tap-highlight-color: transparent;
+}
+.tgt-item:hover, .tgt-item:active {
+  border-color: var(--gold-line); background: var(--gold-dim);
+}
+.tgt-ico { font-size: 28px; flex-shrink: 0; }
+.tgt-name {
+  font-size: 14px; font-weight: 700;
+  color: var(--text); margin-bottom: 3px;
+}
+.tgt-desc {
+  font-size: 11.5px; color: var(--muted);
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.55; margin: 0;
+}
+
+.rev-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 9px; margin: 22px 0;
+}
+.rev-card {
+  padding: 16px 12px; text-align: center;
+  border: 1px solid var(--line); border-radius: 12px;
+  background: rgba(255,255,255,0.018);
+  transition: 0.2s;
+}
+.rev-card:hover { border-color: var(--gold-line); }
+.rev-ico { font-size: 22px; margin-bottom: 7px; }
+.rev-name {
+  font-size: 11px; font-weight: 700;
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--gold); margin-bottom: 3px;
+}
+.rev-desc {
+  font-size: 10px; color: var(--muted);
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.45; margin: 0;
+}
+
+/* ═══════════════════════════════════════
+   VISION
+═══════════════════════════════════════ */
+#vision {
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+.vision-q {
+  font-size: 15px; font-style: italic;
+  color: var(--gold-lt); line-height: 1.8;
+  margin: 26px 0;
+  padding: 22px 24px;
+  border: 1px solid var(--gold-line);
+  border-radius: var(--r);
+  background: var(--gold-dim);
+  position: relative;
+}
+.vision-q::before {
+  content: '\201C';
+  font-size: 64px; color: var(--gold);
+  opacity: 0.22; position: absolute;
+  top: -8px; left: 14px; line-height: 1;
+  font-style: normal;
+}
+.vision-items {
+  display: flex; flex-direction: column; gap: 11px;
+  text-align: left; margin: 22px 0;
+}
+.vi {
+  padding: 16px 18px;
+  border-left: 3px solid var(--gold);
+  background: rgba(200,169,110,0.04);
+  border-radius: 0 12px 12px 0;
+  font-size: 13px; color: rgba(240,235,224,0.75);
+  line-height: 1.75;
+  transition: background 0.2s;
+}
+.vi:hover { background: var(--gold-dim); }
+.vi strong { color: var(--text); }
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+footer {
+  padding: 40px 24px 56px;
+  text-align: center;
+  border-top: 1px solid var(--line);
+}
+.ft-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 24px; font-weight: 900;
+  color: var(--gold); margin-bottom: 8px;
+}
+.ft-logo-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: rgba(240,235,224,0.96);
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.22);
+}
+.ft-logo-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.ft-sub {
+  font-size: 10px; font-family: 'Segoe UI', sans-serif;
+  color: var(--muted); letter-spacing: 0.1em;
+  line-height: 1.8;
+}
+
+/* ═══════════════════════════════════════
+   DIVIDER
+═══════════════════════════════════════ */
+.div-line {
+  display: flex; align-items: center; gap: 12px;
+  margin: 28px 0; font-size: 11px;
+  letter-spacing: 0.28em; color: var(--muted);
+}
+.div-line::before, .div-line::after {
+  content: ''; flex: 1; height: 1px; background: var(--line);
+}
+
+/* ═══════════════════════════════════════
+   KEYFRAMES
+═══════════════════════════════════════ */
+@keyframes rise    { to { opacity: 1; transform: none; } }
+@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ripple  { 0%,100%{opacity:0.5;transform:scale(1)} 50%{opacity:0;transform:scale(1.45)} }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media (min-width: 600px) {
+  nav { padding: 14px 32px; }
+  .ss-grid { grid-template-columns: repeat(4, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- 스크롤 진행 바 -->
+<div id="prog"></div>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav>
+  <div class="nav-logo">
+    <span class="nav-logo-mark"><img src="wem-logo.png" alt="WEM 로고"></span>
+    <span class="nav-logo-text">성북서림<small>WEM PRESENTS · SEONGBUK SEORIM</small></span>
+  </div>
+  <div class="nav-links">
+    <a href="#overview">개요</a>
+    <a href="#ep-wrap">에피소드</a>
+    <a href="#tech">기술</a>
+    <a href="#vision">비전</a>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════════
+     HERO
+     ══════════════════════════════════════════ -->
+<section id="hero">
+  <!-- ██ IMAGE PLACEHOLDER ①: 히어로 배경 이미지
+       CSS에서 .hero-bg-img 의 background 속성을 수정하세요.
+       ex) background: url('hero-art.jpg') center/cover no-repeat; -->
+  <div class="hero-bg-img"></div>
+  <canvas id="particles"></canvas>
+  <div class="hero-veil"></div>
+
+  <div class="hero-body">
+    <div class="hero-brand">
+      <span class="hero-brand-mark"><img src="wem-logo.png" alt="WEM 로고"></span>
+      <span class="hero-brand-text">WEM BRAND PROJECT</span>
+    </div>
+    <div class="eyebrow">시네마틱 인터랙티브 게임 · 2026</div>
+    <h1>
+      성북서림
+      <span class="hanja">城 北 書 林</span>
+    </h1>
+    <p class="hero-sub">WEM PROJECT · Seongbuk Seorim : The Creative Mind</p>
+    <p class="hero-desc">
+      1930년대 성북동, 한국 근현대 문학 거장들의 창작 순간 속으로.<br>
+      <strong>WEM이 기획한 문장이 탄생하던 공간과 감정을 직접 체험하는 여정.</strong>
+    </p>
+    <div class="cta-row">
+      <a href="#overview" class="btn-fill">
+        <svg width="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+        기획안 보기
+      </a>
+      <a href="#ep-wrap" class="btn-ghost">에피소드 →</a>
+    </div>
+  </div>
+
+  <!-- ██ VIDEO PLACEHOLDER ①: 메인 트레일러
+       이 play-ring 버튼에 클릭 이벤트를 연결하거나
+       아래 JS의 hero-play-btn 핸들러에서 영상 URL을 설정하세요. -->
+  <div class="hero-play">
+    <div class="play-ring" id="hero-play-btn">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </div>
+    <div class="play-label">TRAILER<br>트레일러</div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     OVERVIEW
+     ══════════════════════════════════════════ -->
+<section id="overview" class="sec">
+  <div class="sec-tag rv">Project Overview</div>
+  <h2 class="rv d1">창작을 게임화한<br>체험형 서사</h2>
+
+  <div class="pull-quote rv d2">
+    "플레이 과정 자체가 문학 창작 순간이 되는,<br>창작의 여정을 게임화한 콘텐츠"
+  </div>
+
+  <p class="rv d2">
+    &lt;성북서림&gt;은 1930년대 성북동에서 창작했던 한국 근현대 문학 작가들의 시선을 따라
+    그들의 작품 창작 과정을 게임 형태로 경험할 수 있도록 구성한
+    <strong>WEM의 시네마틱 인터랙티브 게임 프로젝트</strong>입니다.
+  </p>
+  <p class="rv">
+    문학 작가의 내면과 문장이 탄생하던 순간의 공간·감정·맥락을 디지털 성북동 속에
+    정교하게 재구성함으로써, 문학을 단순한 기록이 아닌
+    <em>'체험 가능한 서사'</em>로 전환합니다.
+  </p>
+
+  <!-- ██ IMAGE PLACEHOLDER ②: 게임 컨셉아트 / 키아트
+       이 .img-ph 블록을 <img> 태그로 교체하거나
+       CSS에서 background: url('concept-art.jpg') center/cover; 로 설정하세요.
+       권장 해상도: 1600×900px 이상 -->
+  <div class="img-ph rv">
+    <img src="overview-keyart.png" alt="성북서림 게임 컨셉아트와 키아트">
+  </div>
+
+  <div class="tags rv">
+    <span class="tag">시네마틱 어드벤처</span>
+    <span class="tag">인터랙티브 내러티브</span>
+    <span class="tag">디지털 아카이빙</span>
+    <span class="tag">언리얼 엔진 5</span>
+    <span class="tag">한국 근현대 문학</span>
+    <span class="tag">메타휴먼</span>
+    <span class="tag">성북동</span>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     EPISODES
+     ══════════════════════════════════════════ -->
+<div id="ep-wrap">
+  <div class="ep-header">
+    <div class="sec-tag rv">Episodes</div>
+    <h2 class="rv d1">두 작가,<br>두 개의 창작 세계</h2>
+    <p class="rv d2" style="font-size:13px">
+      이태준과 박태원 — 성북동을 근거지로 한 두 문학 거장의 창작 세계로 떠나는 개별 여정
+    </p>
+  </div>
+
+  <div class="ep-tabs">
+    <div class="ep-tab on" data-t="1" onclick="switchEp(1)">📖 이태준 에피소드</div>
+    <div class="ep-tab"    data-t="2" onclick="switchEp(2)">🌙 박태원 에피소드</div>
+  </div>
+
+  <div class="ep-body">
+
+    <!-- ── Episode 1: 이태준 ── -->
+    <div class="ep-panel on" data-p="1">
+      <div class="ornament" style="color:var(--ep1)">壽 硯 之 夜</div>
+      <h3 style="color:var(--ep1)">달빛이 머무는 산방,<br>수연(壽硯)의 밤</h3>
+      <p>
+        1930년대 성북동을 주 무대로, 작가 <strong>이태준</strong>의 창작 환경을 탐색합니다.
+        수연산방 내부를 정밀하게 조사하고 소설 속 인물들과 직접 상호작용하며
+        서사적 몰입감을 높입니다.
+      </p>
+
+      <!-- ██ VIDEO PLACEHOLDER ②: 이태준 에피소드 게임플레이 영상
+           교체 방법 (YouTube):
+             이 .vid-ph.gold 블록을 아래 코드로 교체:
+             <iframe src="https://www.youtube.com/embed/[VIDEO_ID]"
+               style="width:100%;aspect-ratio:16/9;border-radius:16px;border:none;"
+               allowfullscreen></iframe>
+           교체 방법 (로컬 파일):
+             <video src="ep1-gameplay.mp4" controls
+               style="width:100%;border-radius:16px;"></video> -->
+      <div class="vid-ph gold rv">
+        <video controls autoplay muted loop playsinline preload="metadata">
+          <source src="./leetaejun-main-play.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <ul class="feat-list rv">
+        <li><span class="ico">🏮</span><span><strong>배경:</strong> 1930년대 성북동 수연산방 — 조도와 대기 분위기가 서사 진행에 따라 실시간으로 변화</span></li>
+        <li><span class="ico">🖊</span><span><strong>핵심 메커닉:</strong> 흩어진 소설 구절 수집 → 문장 완성 — 『달밤』 · 『손거부』의 텍스트를 플레이어가 직조</span></li>
+        <li><span class="ico">👤</span><span><strong>NPC 상호작용:</strong> 황수건 등 소설 속 인물들과 직접 대화하며 서사적 몰입 경험</span></li>
+        <li><span class="ico">🌙</span><span><strong>분위기:</strong> 달빛이 스며드는 문인의 공간, 작가의 내밀한 심리 상태를 조명으로 시각화</span></li>
+      </ul>
+
+      <!-- ██ IMAGE PLACEHOLDER ③: 이태준 에피소드 스크린샷
+           .ss-ph 요소들을 <img> 태그로 교체하세요.
+           권장 해상도: 800×600px -->
+      <p style="font-size:9px;color:var(--muted);font-family:'Segoe UI',sans-serif;letter-spacing:.15em;margin:18px 0 8px">SCREENSHOTS — IMAGE PLACEHOLDER ③</p>
+      <div class="ss-grid rv">
+        <div class="ss-ph">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 15l-5-5L5 21"/></svg>
+          수연산방 내부
+        </div>
+        <div class="ss-ph">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 15l-5-5L5 21"/></svg>
+          문장 수집 UI
+        </div>
+        <div class="ss-ph">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 15l-5-5L5 21"/></svg>
+          NPC 대화
+        </div>
+        <div class="ss-ph">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 15l-5-5L5 21"/></svg>
+          달빛 야경
+        </div>
+      </div>
+    </div><!-- /ep1 -->
+
+
+    <!-- ── Episode 2: 박태원 ── -->
+    <div class="ep-panel" data-p="2">
+      <div class="ornament" style="color:var(--ep2)">孤 獨 의 文 章</div>
+      <h3 style="color:var(--ep2)">고독이 문장이<br>되는 시간</h3>
+      <p>
+        창작의 원동력이 되는 작가 <strong>박태원</strong>의 고독과 방황,
+        그리고 그것이 문학으로 승화되는 심리적 전이 과정을 심도 있게 다룹니다.
+      </p>
+
+      <!-- ██ VIDEO PLACEHOLDER ③: 박태원 에피소드 게임플레이 영상
+           (위 이태준 에피소드와 동일한 방법으로 교체) -->
+      <div class="vid-ph blue rv">
+        <video controls autoplay muted loop playsinline preload="metadata">
+          <source src="./parktaewon-gyeongseong.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <ul class="feat-list rv">
+        <li><span class="ico">🚶</span><span><strong>핵심 역할:</strong> '산책자'로서 근대 경성 거리를 배회하며 일상의 파편들을 관찰하고 기록</span></li>
+        <li><span class="ico">🔀</span><span><strong>서사 구조:</strong> 관찰 기록들이 『소설가 구보씨의 일일』 같은 문학 표현으로 변모하는 순간을 인터랙티브하게 연출</span></li>
+        <li><span class="ico">🧠</span><span><strong>의식의 흐름:</strong> 작가의 독특한 내면 흐름을 시각적·청각적으로 전달하는 실험적 연출</span></li>
+        <li><span class="ico">🌆</span><span><strong>배경:</strong> 1930년대 근대 경성의 골목과 군중 속 고독한 산책</span></li>
+      </ul>
+
+      <!-- ██ IMAGE PLACEHOLDER ④: 박태원 에피소드 스크린샷 -->
+      <p style="font-size:9px;color:var(--muted);font-family:'Segoe UI',sans-serif;letter-spacing:.15em;margin:18px 0 8px">SCREENSHOTS — IMAGE PLACEHOLDER ④</p>
+      <div class="ss-grid rv">
+        <div class="ss-ph">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 15l-5-5L5 21"/></svg>
+          경성 거리
+        </div>
+        <div class="ss-ph">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 15l-5-5L5 21"/></svg>
+          관찰 기록 UI
+        </div>
+        <div class="ss-ph">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 15l-5-5L5 21"/></svg>
+          의식의 흐름
+        </div>
+        <div class="ss-ph">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 15l-5-5L5 21"/></svg>
+          문장 생성
+        </div>
+      </div>
+    </div><!-- /ep2 -->
+
+  </div><!-- /ep-body -->
+</div><!-- /ep-wrap -->
+
+
+<!-- ══════════════════════════════════════════
+     TECH
+     ══════════════════════════════════════════ -->
+<section id="tech">
+  <div class="inner">
+    <div class="sec-tag rv">Technology</div>
+    <h2 class="rv d1">극사실적 재현을 위한<br>기술적 구현</h2>
+    <p class="rv d2">
+      언리얼 엔진 5의 고해상도 렌더링으로 성북동 골목과 수연산방 등
+      역사적 공간을 극사실적으로 재현합니다.
+    </p>
+
+    <!-- ██ IMAGE / VIDEO PLACEHOLDER ⑤: UE5 렌더링 시연 또는 기술 데모
+         아래 .img-ph 블록을 이미지나 YouTube iframe으로 교체하세요. -->
+    <div class="img-ph rv">
+      <video controls autoplay muted loop playsinline preload="metadata">
+        <source src="./leetaejun-suyeonsanbang.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="tech-grid rv">
+      <div class="tech-card">
+        <div class="tech-ico">🎮</div>
+        <div class="tech-name">Unreal Engine 5</div>
+        <div class="tech-desc">Lumen·Nanite 기반 고해상도 실시간 렌더링으로 역사 공간 극사실 재현</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-ico">🧑</div>
+        <div class="tech-name">MetaHuman</div>
+        <div class="tech-desc">에픽게임즈 메타휴먼으로 문학 거장들을 정교한 3D 캐릭터로 복원</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-ico">🤖</div>
+        <div class="tech-name">AI System</div>
+        <div class="tech-desc">당시 복식·환경음을 AI로 세밀하게 생성, 디지털 아카이빙 가치 극대화</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-ico">💡</div>
+        <div class="tech-name">실시간 조명</div>
+        <div class="tech-desc">서사 진행에 따라 조도·대기가 변화, 작가 심리 상태를 조명으로 시각화</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     TARGET & REVENUE
+     ══════════════════════════════════════════ -->
+<section id="target" class="sec">
+  <div class="sec-tag rv">Target & Revenue</div>
+  <h2 class="rv d1">타겟 분석 &<br>수익 모델</h2>
+
+  <div class="tgt-list rv">
+    <div class="tgt-item">
+      <div class="tgt-ico">🎮</div>
+      <div>
+        <div class="tgt-name">스토리 중심 인디 게임 이용자</div>
+        <p class="tgt-desc">내러티브 몰입형 어드벤처를 즐기는 코어 게이머 및 문학·역사 관심층</p>
+      </div>
+    </div>
+    <div class="tgt-item">
+      <div class="tgt-ico">🏫</div>
+      <div>
+        <div class="tgt-name">교육 기관</div>
+        <p class="tgt-desc">실감형 교보재를 필요로 하는 학교·공공기관 — 교육용 라이선스 공급</p>
+      </div>
+    </div>
+    <div class="tgt-item">
+      <div class="tgt-ico">🏛</div>
+      <div>
+        <div class="tgt-name">박물관 & 문학관</div>
+        <p class="tgt-desc">전시용 맞춤형 콘텐츠 납품, 레트로·근현대 문화 향유 대중</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="div-line rv">수 익 모 델</div>
+
+  <div class="rev-grid rv">
+    <div class="rev-card">
+      <div class="rev-ico">📦</div>
+      <div class="rev-name">디지털 패키지</div>
+      <p class="rev-desc">일반 사용자 대상 게임 판매 및 DLC</p>
+    </div>
+    <div class="rev-card">
+      <div class="rev-ico">🎓</div>
+      <div class="rev-name">교육 라이선스</div>
+      <p class="rev-desc">학교·공공기관 공급용 라이선스</p>
+    </div>
+    <div class="rev-card">
+      <div class="rev-ico">🖼</div>
+      <div class="rev-name">전시 콘텐츠</div>
+      <p class="rev-desc">박물관·문학관 전시용 맞춤 납품</p>
+    </div>
+    <div class="rev-card">
+      <div class="rev-ico">♾️</div>
+      <div class="rev-name">IP 확장</div>
+      <p class="rev-desc">캐릭터·공간 에셋 기반 지속 수익</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     VISION
+     ══════════════════════════════════════════ -->
+<section id="vision" class="sec">
+  <div class="sec-tag rv" style="justify-content:center">
+    <span style="flex:initial">Vision</span>
+  </div>
+  <h2 class="rv d1">기대 효과 &<br>미래 비전</h2>
+
+  <div class="vision-q rv d2">
+    게임 메커니즘과 문학적 창작 개념을 결합하여,<br>
+    기존의 수동적인 문학 감상 방식을 확장·혁신하는<br>
+    <strong>체험형 융복합 콘텐츠</strong>
+  </div>
+
+  <div class="vision-items rv">
+    <div class="vi">
+      📚 <strong>문학 교육의 혁신</strong><br>
+      청소년·청년 세대에게 한국 문학을 보다 친숙하게 전달하는 새로운 교육적 대안 제시
+    </div>
+    <div class="vi">
+      🏙 <strong>디지털 문화 아카이빙</strong><br>
+      역사적 문화 자원을 고품질 3D 자산으로 보존, 지자체 및 문화 기관과의 협력 기반 확보
+    </div>
+    <div class="vi">
+      🌏 <strong>관광·전시 산업 확장</strong><br>
+      성북동·경성 역사 공간 에셋을 활용한 실감형 관광 및 전시 콘텐츠로의 확장 가능성
+    </div>
+    <div class="vi">
+      🔗 <strong>IP 생태계 구축</strong><br>
+      한 번 구축된 캐릭터와 공간 에셋으로 지속적으로 IP를 확장하는 수익 사업 모델 지향
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+     ══════════════════════════════════════════ -->
+<footer>
+  <div class="ft-logo">
+    <span class="ft-logo-mark"><img src="wem-logo.png" alt="WEM 로고"></span>
+    <span>성북서림</span>
+  </div>
+  <div class="ft-sub">
+    城北書林 · Seongbuk Seorim: The Creative Mind<br>
+    WEM Interactive Design · 2026
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════════
+     SCRIPTS
+     ══════════════════════════════════════════ -->
+<script>
+/* ── 스크롤 진행 바 ── */
+const prog = document.getElementById('prog');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  prog.style.width = (window.scrollY / h * 100) + '%';
+}, { passive: true });
+
+/* ── 스크롤 리빌 (Intersection Observer) ── */
+const rv = document.querySelectorAll('.rv');
+const rvObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('show'); rvObs.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+rv.forEach(el => rvObs.observe(el));
+
+/* ── 활성 네비게이션 ── */
+const secs = document.querySelectorAll('section[id], div[id]');
+const navA = document.querySelectorAll('.nav-links a');
+const navObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navA.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
+    }
+  });
+}, { threshold: 0.35 });
+secs.forEach(s => navObs.observe(s));
+
+/* ── 에피소드 탭 전환 ── */
+function switchEp(n) {
+  document.querySelectorAll('.ep-tab').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.ep-panel').forEach(p => p.classList.remove('on'));
+  document.querySelector(`.ep-tab[data-t="${n}"]`).classList.add('on');
+  document.querySelector(`.ep-panel[data-p="${n}"]`).classList.add('on');
+}
+
+/* ── 파티클 (한자 먼지 / 잉크 방울) ── */
+const cvs = document.getElementById('particles');
+const ctx = cvs.getContext('2d');
+const CHARS = ['書', '林', '城', '北', '文', '月', '墨', '夜', '詩', '言', '道', '·', '·', '·'];
+let W, H, pts;
+
+function resize() {
+  W = cvs.width  = window.innerWidth;
+  H = cvs.height = document.getElementById('hero').offsetHeight || window.innerHeight;
+}
+function initPts() {
+  pts = Array.from({ length: 36 }, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    sz: Math.random() * 1.6 + 0.5,
+    vx: (Math.random() - 0.5) * 0.25,
+    vy: -(Math.random() * 0.35 + 0.08),
+    a: Math.random() * 0.35 + 0.08,
+    ch: CHARS[Math.floor(Math.random() * CHARS.length)]
+  }));
+}
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  pts.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.y < -20)   { p.y = H + 10; p.x = Math.random() * W; }
+    if (p.x < -10)   p.x = W + 10;
+    if (p.x > W + 10) p.x = -10;
+    ctx.save();
+    ctx.globalAlpha = p.a;
+    ctx.fillStyle   = p.ch === '·' ? '#c8a96e' : 'rgba(200,169,110,0.45)';
+    ctx.font        = `${p.sz * 9}px serif`;
+    ctx.fillText(p.ch, p.x, p.y);
+    ctx.restore();
+  });
+  requestAnimationFrame(draw);
+}
+resize(); initPts(); draw();
+window.addEventListener('resize', () => { resize(); initPts(); }, { passive: true });
+
+/* ── 히어로 트레일러 버튼
+   ══ 영상 연결 방법 ══
+   방법 A (YouTube 모달):
+     const modal = document.createElement('div');
+     modal.innerHTML = `<div style="position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;
+       display:flex;align-items:center;justify-content:center" onclick="this.remove()">
+       <iframe src="https://www.youtube.com/embed/[VIDEO_ID]?autoplay=1"
+         style="width:90vw;max-width:640px;aspect-ratio:16/9;border:none;border-radius:12px"
+         allowfullscreen></iframe></div>`;
+     document.body.appendChild(modal);
+
+   방법 B (로컬 파일 모달):
+     위와 동일하되 iframe 대신 <video src="trailer.mp4" autoplay controls ...> 사용
+── */
+document.getElementById('hero-play-btn').addEventListener('click', () => {
+  // ↓↓ 여기에 트레일러 URL 또는 로컬 파일 경로를 넣고 주석 해제하세요 ↓↓
+  // const VIDEO_ID = 'YOUR_YOUTUBE_VIDEO_ID';
+  // const modal = document.createElement('div');
+  // modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;align-items:center;justify-content:center';
+  // modal.innerHTML = `<iframe src="https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1" style="width:90vw;max-width:640px;aspect-ratio:16/9;border:none;border-radius:12px" allowfullscreen></iframe>`;
+  // modal.addEventListener('click', e => { if(e.target===modal) modal.remove(); });
+  // document.body.appendChild(modal);
+  alert('트레일러 영상을 연결해주세요.\nJS 주석 해제 후 VIDEO_ID를 설정하거나\n로컬 파일 경로를 입력하세요.');
+});
+</script>
+
+</body>
+</html>
