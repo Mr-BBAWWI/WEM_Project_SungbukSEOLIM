@@ -589,6 +589,118 @@ p em { color: var(--gold); font-style: normal; }
   line-height: 1.5; padding: 8px; gap: 4px;
 }
 .ss-ph svg { opacity: 0.3; }
+.ss-card {
+  margin: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.03);
+  cursor: zoom-in;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.ss-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold-line);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.22);
+}
+.ss-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+}
+.ss-card figcaption {
+  padding: 10px 12px;
+  font-size: 10px;
+  font-family: 'Segoe UI', sans-serif;
+  letter-spacing: .08em;
+  color: var(--muted);
+}
+.lightbox {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(5,7,14,0.92);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 1000;
+}
+.lightbox.on {
+  opacity: 1;
+  pointer-events: auto;
+}
+.lightbox-panel {
+  width: min(1100px, 100%);
+  max-height: calc(100vh - 48px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #0b0d13;
+  overflow: hidden;
+  box-shadow: 0 28px 80px rgba(0,0,0,0.45);
+}
+.lightbox-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.lightbox-title {
+  font-size: 12px;
+  font-family: 'Segoe UI', sans-serif;
+  letter-spacing: .08em;
+  color: var(--muted);
+}
+.lightbox-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.lightbox-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+  color: var(--text);
+  font-size: 18px;
+  cursor: pointer;
+}
+.lightbox-btn:hover {
+  border-color: var(--gold-line);
+  background: var(--gold-dim);
+}
+.lightbox-body {
+  overflow: auto;
+  max-height: calc(100vh - 120px);
+  padding: 18px;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+}
+.lightbox-stage {
+  transform-origin: center top;
+  transition: transform 0.16s ease-out;
+}
+.lightbox-stage img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.lightbox-hint {
+  padding: 0 18px 16px;
+  font-size: 11px;
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--muted);
+  text-align: center;
+}
 
 /* ═══════════════════════════════════════
    TECH
@@ -794,6 +906,45 @@ footer {
   nav { padding: 14px 32px; }
   .ss-grid { grid-template-columns: repeat(4, 1fr); }
 }
+@media (max-width: 600px) {
+  .lightbox {
+    padding: 0;
+  }
+  .lightbox-panel {
+    width: 100%;
+    max-height: 100vh;
+    height: 100vh;
+    border-radius: 0;
+    border: none;
+  }
+  .lightbox-top {
+    padding: 12px;
+  }
+  .lightbox-title {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  .lightbox-actions {
+    gap: 6px;
+  }
+  .lightbox-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    font-size: 20px;
+  }
+  .lightbox-body {
+    max-height: calc(100vh - 132px);
+    padding: 12px;
+  }
+  .lightbox-stage img {
+    border-radius: 10px;
+  }
+  .lightbox-hint {
+    padding: 0 12px 14px;
+    font-size: 10px;
+  }
+}
 </style>
 </head>
 <body>
@@ -927,7 +1078,7 @@ footer {
     <!-- ── Episode 1: 이태준 ── -->
     <div class="ep-panel on" data-p="1">
       <div class="ornament" style="color:var(--ep1)">壽 硯 之 夜</div>
-      <h3 style="color:var(--ep1)">달빛이 머무는 산방,<br>수연(壽硯)의 밤</h3>
+      <h3 style="color:var(--ep1)">상허(尙虛): 어느 날의 성북</h3>
       <p>
         1930년대 성북동을 주 무대로, 작가 <strong>이태준</strong>의 창작 환경을 탐색합니다.
         수연산방 내부를 정밀하게 조사하고 소설 속 인물들과 직접 상호작용하며
@@ -959,8 +1110,12 @@ footer {
       <!-- ██ IMAGE PLACEHOLDER ③: 이태준 에피소드 스크린샷
            .ss-ph 요소들을 <img> 태그로 교체하세요.
            권장 해상도: 800×600px -->
-      <p style="font-size:9px;color:var(--muted);font-family:'Segoe UI',sans-serif;letter-spacing:.15em;margin:18px 0 8px">SCREENSHOTS — IMAGE PLACEHOLDER ③</p>
+      <p style="font-size:9px;color:var(--muted);font-family:'Segoe UI',sans-serif;letter-spacing:.15em;margin:18px 0 8px">SCREENSHOTS & EXPERIENCE MAP</p>
       <div class="ss-grid rv">
+        <figure class="ss-card js-lightbox-trigger" tabindex="0" role="button" data-img="./leetaejun-experience-structure.png" data-title="이태준 Ep. 경험구조도" aria-label="이태준 경험구조도 크게 보기">
+          <img src="./leetaejun-experience-structure.png" alt="이태준 에피소드 경험구조도">
+          <figcaption>이태준 Ep. 경험구조도</figcaption>
+        </figure>
         <div class="ss-ph">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 15l-5-5L5 21"/></svg>
           수연산방 내부
@@ -984,10 +1139,9 @@ footer {
     <!-- ── Episode 2: 박태원 ── -->
     <div class="ep-panel" data-p="2">
       <div class="ornament" style="color:var(--ep2)">孤 獨 의 文 章</div>
-      <h3 style="color:var(--ep2)">고독이 문장이<br>되는 시간</h3>
+      <h3 style="color:var(--ep2)">이상(理想)을 기다리며</h3>
       <p>
-        창작의 원동력이 되는 작가 <strong>박태원</strong>의 고독과 방황,
-        그리고 그것이 문학으로 승화되는 심리적 전이 과정을 심도 있게 다룹니다.
+        고독과 방황이 '창작'이라는 행복의 순간으로 변하는 과정을 경험합니다.
       </p>
 
       <!-- ██ VIDEO PLACEHOLDER ③: 박태원 에피소드 게임플레이 영상
@@ -1006,8 +1160,12 @@ footer {
       </ul>
 
       <!-- ██ IMAGE PLACEHOLDER ④: 박태원 에피소드 스크린샷 -->
-      <p style="font-size:9px;color:var(--muted);font-family:'Segoe UI',sans-serif;letter-spacing:.15em;margin:18px 0 8px">SCREENSHOTS — IMAGE PLACEHOLDER ④</p>
+      <p style="font-size:9px;color:var(--muted);font-family:'Segoe UI',sans-serif;letter-spacing:.15em;margin:18px 0 8px">SCREENSHOTS & EXPERIENCE MAP</p>
       <div class="ss-grid rv">
+        <figure class="ss-card js-lightbox-trigger" tabindex="0" role="button" data-img="./parktaewon-experience-structure.png" data-title="박태원 Ep. 경험구조도" aria-label="박태원 경험구조도 크게 보기">
+          <img src="./parktaewon-experience-structure.png" alt="박태원 에피소드 경험구조도">
+          <figcaption>박태원 Ep. 경험구조도</figcaption>
+        </figure>
         <div class="ss-ph">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 15l-5-5L5 21"/></svg>
           경성 거리
@@ -1185,6 +1343,26 @@ footer {
   </div>
 </footer>
 
+<div class="lightbox" id="image-lightbox" aria-hidden="true">
+  <div class="lightbox-panel">
+    <div class="lightbox-top">
+      <div class="lightbox-title" id="lightbox-title">Experience Map</div>
+      <div class="lightbox-actions">
+        <button type="button" class="lightbox-btn" id="lightbox-zoom-out" aria-label="축소">−</button>
+        <button type="button" class="lightbox-btn" id="lightbox-zoom-reset" aria-label="원래 크기">1:1</button>
+        <button type="button" class="lightbox-btn" id="lightbox-zoom-in" aria-label="확대">+</button>
+        <button type="button" class="lightbox-btn" id="lightbox-close" aria-label="닫기">×</button>
+      </div>
+    </div>
+    <div class="lightbox-body">
+      <div class="lightbox-stage" id="lightbox-stage">
+        <img id="lightbox-image" src="" alt="">
+      </div>
+    </div>
+    <div class="lightbox-hint">모바일에서는 더블탭으로 확대/축소하고, 드래그로 이동하면서 확인할 수 있습니다.</div>
+  </div>
+</div>
+
 
 <!-- ══════════════════════════════════════════
      SCRIPTS
@@ -1225,6 +1403,84 @@ function switchEp(n) {
   document.querySelector(`.ep-tab[data-t="${n}"]`).classList.add('on');
   document.querySelector(`.ep-panel[data-p="${n}"]`).classList.add('on');
 }
+
+/* ── 경험구조도 라이트박스 ── */
+const lightbox = document.getElementById('image-lightbox');
+const lightboxImage = document.getElementById('lightbox-image');
+const lightboxStage = document.getElementById('lightbox-stage');
+const lightboxTitle = document.getElementById('lightbox-title');
+const zoomInBtn = document.getElementById('lightbox-zoom-in');
+const zoomOutBtn = document.getElementById('lightbox-zoom-out');
+const zoomResetBtn = document.getElementById('lightbox-zoom-reset');
+const closeLightboxBtn = document.getElementById('lightbox-close');
+const lightboxBody = lightbox.querySelector('.lightbox-body');
+let lightboxZoom = 1;
+let lastTapAt = 0;
+
+function applyLightboxZoom() {
+  lightboxStage.style.transform = `scale(${lightboxZoom})`;
+}
+
+function openLightbox(src, alt, title) {
+  lightboxImage.src = src;
+  lightboxImage.alt = alt;
+  lightboxTitle.textContent = title;
+  lightboxZoom = 1;
+  applyLightboxZoom();
+  lightboxBody.scrollTop = 0;
+  lightboxBody.scrollLeft = 0;
+  lightbox.classList.add('on');
+  lightbox.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('on');
+  lightbox.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+function adjustLightboxZoom(delta) {
+  lightboxZoom = Math.min(3, Math.max(0.6, +(lightboxZoom + delta).toFixed(2)));
+  applyLightboxZoom();
+}
+
+document.querySelectorAll('.js-lightbox-trigger').forEach(card => {
+  const image = card.querySelector('img');
+  const title = card.dataset.title || image.alt;
+  card.addEventListener('click', () => openLightbox(card.dataset.img, image.alt, title));
+  card.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openLightbox(card.dataset.img, image.alt, title);
+    }
+  });
+});
+
+zoomInBtn.addEventListener('click', () => adjustLightboxZoom(0.2));
+zoomOutBtn.addEventListener('click', () => adjustLightboxZoom(-0.2));
+zoomResetBtn.addEventListener('click', () => {
+  lightboxZoom = 1;
+  applyLightboxZoom();
+});
+closeLightboxBtn.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', e => {
+  if (e.target === lightbox) closeLightbox();
+});
+document.addEventListener('keydown', e => {
+  if (!lightbox.classList.contains('on')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === '+' || e.key === '=') adjustLightboxZoom(0.2);
+  if (e.key === '-') adjustLightboxZoom(-0.2);
+});
+lightboxImage.addEventListener('touchend', () => {
+  const now = Date.now();
+  if (now - lastTapAt < 280) {
+    lightboxZoom = lightboxZoom > 1 ? 1 : 2;
+    applyLightboxZoom();
+  }
+  lastTapAt = now;
+}, { passive: true });
 
 /* ── 파티클 (한자 먼지 / 잉크 방울) ── */
 const cvs = document.getElementById('particles');
